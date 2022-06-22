@@ -1,5 +1,3 @@
-
-   
 name: Cache test
 on: workflow_dispatch
 
@@ -21,16 +19,14 @@ jobs:
           console.log(token)
           baseUrl = (process.env['ACTIONS_CACHE_URL'] || process.env['ACTIONS_RUNTIME_URL'] || '')
           console.log(baseUrl)
-
-
     - name: Cache node modules
-      uses: actions/cache@aad9d15d47a6041a1c5e79c6c58cc0675630817c
+      uses: actions/cache@main
       env:
         cache-name: cache-node-modules
       with:
         # npm cache files are stored in `~/.npm` on Linux/macOS
         path: node_modules
-        key: 123fdsfsdgkgkjdfjghdfjgldjfd     
+        key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('package.json') }}-${{ github.run_number }}      
     
     - name: npm install and build
       continue-on-error: false
